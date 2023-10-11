@@ -1,0 +1,47 @@
+const body = byTag('body')[0]
+let str  = "yes"
+let obj = {}
+body.insert(new PersonCard(
+    Div(
+        P('paragraph 3'),
+        P('paragraph 2'),
+        P('paragraph 3'),
+    )
+))
+const url = 'https://jsonplaceholder.typicode.com/users'
+console.log(typeof(undefined))
+console.log(Object.getPrototypeOf(undefined))
+
+
+// async function main() {
+//     try {
+//         const res = await fetch(url)
+//     const data = await res.json()
+//     let num = 24
+//     for(let d of data) {
+//         body.insert(new PersonCard(Div(P(num.toString(18)))))
+//     }
+//     console.table(data)
+//     }
+//     catch(e) {
+//         console.trace(e)
+//     }
+// }
+
+// main()
+
+// async function Post(input) {
+//     try {
+//         let res = await fetch(url, {
+//             headers: {},
+//             method: "POST",
+//             body: JSON.stringify(input, null, 4)
+//         })
+//         let data = await res.json()
+//         return data
+//     }
+//     catch(error) {
+//         console.error(error)
+//         return false;
+//     }
+// }
