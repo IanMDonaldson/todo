@@ -46,6 +46,13 @@ function create(
 const append = (tag) => document.appendChild(tag);
 
 const byId = (id) => document.getElementById(id);
+function byIds(...ids) {
+  let obj = {}
+  for (let id of ids) {
+    obj[id] = document.getElementById(id);
+  }
+  return obj
+}
 const byTag = (tag) => document.getElementsByTagName(tag);
 const byClass = (className) => document.getElementsByClassName(className);
 
@@ -155,7 +162,15 @@ function handleDelete(hiddenId) {
   }
   pageData.todos.splice(indexOfTodo, 1);
   writeToLocalStorage(pageData.todos);
-  location.reload();
+}
+
+function handleTimSave(title, task) {
+  let todo = new TodoElement({
+    title: title,
+    task: task
+  })
+  pageData.todos.push(todo)
+  renderTodos()
 }
 
 const handleSave = function (
@@ -174,16 +189,13 @@ const handleSave = function (
   }
   pageData.todos[indexOfTodo].title = todoTitleInput.value;
   pageData.todos[indexOfTodo].description = todoDescriptionInput.value;
-  pageData.todos[indexOfTodo].duedate = todoDateInput.value;
+  pageData.todos[indexOfTodo].dueDate = Date.parse(todoDateInput.value);
   writeToLocalStorage(pageData.todos); //sorts too!
   toggleDisabled(iconWrapper.childNodes[1]);
   toggleDisabled(iconWrapper.childNodes[2]);
   toggleInputs(textWrapper);
-  location.reload();
 };
-function refreshPage() {
-  window.location.reload;
-}
+
 const handleEdit = function (textwrapper, iconWrapper) {
   toggleDisabled(iconWrapper.childNodes[1]);
   toggleDisabled(iconWrapper.childNodes[2]);
@@ -194,6 +206,21 @@ const handleEdit = function (textwrapper, iconWrapper) {
 function handleAddSubtask(iconWrapper, todoElement) {
   console.log("handleAddSubtask clicked");
 }
+function handleNewTodo() {
+  let inputs = byIds('newtodo-title', 'newtodo-date', 'newtodo-description')
+  let newtodo = {
+    id: generateId(),
+    title: inputs["newtodo-title"].value,
+    description: inputs["newtodo-description"].value,
+    dueDate: inputs["newtodo-date"].value
+  }
+  console.log(newtodo)
+  pageData.todos.push(newtodo)
+  writeToLocalStorage(pageData.todos)
+  console.log(pageData.todos)
+}
+
+
 
 function addButtonEventListeners(textWrapper, iconWrapper, hiddenId) {
   let todoTitleInput = textWrapper.childNodes[0].childNodes[1];
@@ -229,8 +256,8 @@ function addButtonEventListeners(textWrapper, iconWrapper, hiddenId) {
     handleAddSubtask();
   });
 }
-function timeTillDue(duedate) {
-  let total = Date.parse(duedate) - Date.parse(new Date());
+function timeTillDue(dueDate) {
+  let total = Date.parse(dueDate) - Date.parse(new Date());
   let seconds = Math.floor((total / 1000) % 60);
   let minutes = Math.floor((total / 1000 / 60) % 60);
   let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
@@ -252,15 +279,19 @@ function formatTodoDate(timetill) {
 }
 
 function colorcodeDueDate(todoDueDate, timetill) {
-  //default duedate has the duedate-good class on it
+  //default dueDate has the dueDate-good class on it
   if (timetill.days < 2) {
-    todoDueDate.classList.remove("duedate-good");
-    todoDueDate.classList.add("duedate-alert");
+    todoDueDate.classList.remove("dueDate-good");
+    todoDueDate.classList.add("dueDate-alert");
     return;
   }
   if (timetill.days < 5 && timetill.days >= 2) {
-    todoDueDate.classList.remove("duedate-good");
-    todoDueDate.classList.add("duedate-warning");
+    todoDueDate.classList.remove("dueDate-good");
+    todoDueDate.classList.add("dueDate-warning");
     return;
   }
 }
+
+function handleError() {}
+function handleSuccess() {}
+function handleToast() {}

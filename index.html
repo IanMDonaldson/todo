@@ -23,47 +23,70 @@
     <!-- </div> -->
   </div>
 
+  <div class="toast-wrapper" style="width: clamp(8rem, 20vw, 500px);
+  background: hsl(140 50% 50% / 0.5);
+  color: white;
+  font-family: verdana;
+  text-align: left;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border-radius: 2rem;
+  box-shadow: 0px 0px 1rem hsl(0 0% 45% / 0.5);
+  margin-left: auto;
+  margin-right: 20vw;
+  opacity: 0.75;
+  display: none;">
+  <div class="close-icon" style="text-align: right; cursor: pointer;">x</div>
+    <div class="toast-title" style="font-size: 1.5rem; font-weight: bold;">Success</div>
+    <div class="toast-body" style="font-size: 1rem"> ...Message </div>
+  </div>
+  <div class="toast-wrapper" style="width: clamp(8rem, 20vw, 500px);
+  background: hsl(0 100% 68% / 0.5);
+  color: white;
+  font-family: verdana;
+  text-align: left;
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  border-radius: 2rem;
+  box-shadow: 0px 0px 1rem hsl(0 0% 45% / 0.5);
+  margin-left: auto;
+  margin-right: 20vw;
+  opacity: 0.75">
+  <div class="close-icon" style="    text-align: right;
+  width: fit-content;
+  cursor: pointer;
+  position: absolute;
+  right: 5%;
+  top: 5%;">x</div>
+    <div class="toast-title" style="font-size: 1.5rem; font-weight: bold;  width: fit-content;">Error</div>
+    <div class="toast-body" style="font-size: 1rem"> ...Message </div>
+  </div>
+
   <div id="todolist-wrapper" class="mylightbrown">
     <div class="todo-model">
       <div class="text-wrapper">
         <div class="titledue-wrapper">
-          <input class="normaltext title-input" type="text" placeholder="TITLE" />
-          <input class="normaltext date-input" type="datetime-local" placeholder="DUE DATE" />
+          <input required class="normaltext title-input" type="text" placeholder="TITLE" id="newtodo-title"/>
+          <input required class="normaltext date-input" type="datetime-local" placeholder="DUE DATE" id="newtodo-date"/>
         </div>
-        <input type="text-area" class="normaltext description-input" placeholder="TODO DESCRIPTION" />
+        <input required type="text-area" class="normaltext description-input" placeholder="TODO DESCRIPTION" id="newtodo-description"/>
       </div>
       <div class="icon-wrapper">
-        <i data-feather="trash-2" class="todo-icon delete"></i>
-        <i data-feather="save" class="todo-icon save"></i>
-        <i data-feather="edit-3" class="todo-icon edit"></i>
+        <button onclick="handleNewTodo()">
+          <i data-feather="save" class="todo-icon save" id="newtodo-save"></i>
+        </button>
+        <i></i>
+        <i></i>
       </div>
     </div>
   </div>
   <div class="todolist" id="todolist">
 
-    <div class="todo-model">
-      <div class="text-wrapper">
-        <div class="titledue-wrapper">
-          <p class="todo-title">Title</p>
-          <input class="normaltext title-input display-none" type="text" placeholder="TITLE" />
-          <p class="todo-duedate">5 Days</p>
-          <input class="normaltext date-input display-none" type="datetime-local" placeholder="DUE DATE" />
-        </div>
-        <p class="todo-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-          laboris nisi ut </p>
-        <input type="text-area" class="normaltext description-input display-none" placeholder="TODO DESCRIPTION" />
-      </div>
-      <div class="icon-wrapper">
-        <i data-feather="trash-2" class="todo-icon delete"></i>
-        <i data-feather="save" class="todo-icon save"></i>
-        <i data-feather="edit-3" class="todo-icon edit"></i>
-      </div>
-    </div>
   </div>
   </div>
 
   <div class="footer" id="footer">
+
 
   </div>
   <dialog id="deleteConfirmDialog" style="padding: 10%; position: absolute; top: 25%; left: 25%;">
