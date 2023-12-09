@@ -1,6 +1,7 @@
-const readFromLocalStorage = () => JSON.parse(localStorage.getItem("todos"));
+function readFromLocalStorage() { return JSON.parse(localStorage.getItem("todos"))}
 const writeToLocalStorage = (todos) => {
   localStorage.setItem('todos', JSON.stringify(sortTodos(todos)));
+  
 }
 const generateId = () => {
   return Math.floor(Math.random() * 999_999_999).toString(16);

@@ -8,6 +8,16 @@
   <title>Just a todo lists</title>
 
   <script src="https://unpkg.com/feather-icons"></script>
+  <script>
+    function toggleDisplay(elem) {
+      if (elem.classList.contains("display-none")) {
+        elem.classList.remove("display-none");
+        return true;
+      }
+      elem.classList.add("display-none");
+      return true;
+    }
+  </script>
 </head>
 
 <body>
@@ -23,57 +33,96 @@
     <!-- </div> -->
   </div>
 
-  <div class="toast-wrapper" style="width: clamp(8rem, 20vw, 500px);
-  background: hsl(140 50% 50% / 0.5);
-  color: white;
-  font-family: verdana;
-  text-align: left;
-  padding-inline: 2rem;
-  padding-block: 1rem;
-  border-radius: 2rem;
-  box-shadow: 0px 0px 1rem hsl(0 0% 45% / 0.5);
-  margin-left: auto;
-  margin-right: 20vw;
-  opacity: 0.75;
-  display: none;">
-  <div class="close-icon" style="text-align: right; cursor: pointer;">x</div>
+  <div class="toast-wrapper display-none" 
+    id="toast-success"
+    style="width: clamp(8rem, 20vw, 500px);
+      background: hsl(140 50% 50% / 0.5);
+      color: white;
+      font-family: verdana;
+      text-align: left;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      border-radius: 2rem;
+      box-shadow: 0px 0px 1rem hsl(0 0% 45% / 0.5);
+      margin-left: auto;
+      margin-right: 4vw;
+      opacity: 0.75;
+      z-index:2000;
+      ">
+    <div class="close-icon" 
+      id="toast-success-close"
+      style="    text-align: right;
+      width: fit-content;
+      cursor: pointer;
+      position: absolute;
+      right: 5%;
+      font-size: xx-large;
+      top: 5%;
+      
+      ">x</div>
     <div class="toast-title" style="font-size: 1.5rem; font-weight: bold;">Success</div>
-    <div class="toast-body" style="font-size: 1rem"> ...Message </div>
+    <div class="toast-body" style="font-size: 1rem" id="toast-success-message"></div>
   </div>
-  <div class="toast-wrapper" style="width: clamp(8rem, 20vw, 500px);
-  background: hsl(0 100% 68% / 0.5);
-  color: white;
-  font-family: verdana;
-  text-align: left;
-  padding-inline: 2rem;
-  padding-block: 1rem;
-  border-radius: 2rem;
-  box-shadow: 0px 0px 1rem hsl(0 0% 45% / 0.5);
-  margin-left: auto;
-  margin-right: 20vw;
-  opacity: 0.75">
-  <div class="close-icon" style="    text-align: right;
-  width: fit-content;
-  cursor: pointer;
-  position: absolute;
-  right: 5%;
-  top: 5%;">x</div>
-    <div class="toast-title" style="font-size: 1.5rem; font-weight: bold;  width: fit-content;">Error</div>
-    <div class="toast-body" style="font-size: 1rem"> ...Message </div>
+  <div class="toast-wrapper display-none" 
+    id="toast-error"
+    style="width: clamp(8rem, 20vw, 500px);
+      background: hsl(0 100% 68% / 0.5);
+      color: white;
+      font-family: verdana;
+      text-align: left;
+      padding-inline: 2rem;
+      padding-block: 1rem;
+      border-radius: 2rem;
+      box-shadow: 0px 0px 1rem hsl(0 0% 45% / 0.5);
+      margin-left: auto;
+      margin-right: 4vw;
+      opacity: 0.75;
+      z-index: 2000;
+      ">
+    <div class="close-icon" 
+      id="toast-error-close"
+      style="
+      text-align: right;
+      width: fit-content;
+      cursor: pointer;
+      position: absolute;
+      right: 5%;
+      font-size: xx-large;
+      top: 5%; "
+      >x</div>
+    <div class="toast-title" style="font-size: 1.5rem; 
+        font-weight: bold;  
+        width: fit-content;">
+      Error
+    </div>
+    <div class="toast-body" style="font-size: 1rem" id="toast-error-message"> </div>
   </div>
 
   <div id="todolist-wrapper" class="mylightbrown">
     <div class="todo-model">
       <div class="text-wrapper">
         <div class="titledue-wrapper">
-          <input required class="normaltext title-input" type="text" placeholder="TITLE" id="newtodo-title"/>
-          <input required class="normaltext date-input" type="datetime-local" placeholder="DUE DATE" id="newtodo-date"/>
+          <input  class="normaltext title-input" type="text" placeholder="TITLE"
+             id="newtodo-title" required/>
+          <!-- <input class="normaltext date-input" type="text"
+              placeholder="javascript:todaysDate()" id="newtodo-date" required  oninput="handleNewTodoDate(this.value)"/> -->
+          <div class="new-duedate-wrapper">
+<input type="date" id="newtodo-date" style="
+          
+          "/>
+          <input type="time" id="newtodo-time" style="
+          
+          "/>
+
+          </div>
         </div>
-        <input required type="text-area" class="normaltext description-input" placeholder="TODO DESCRIPTION" id="newtodo-description"/>
+        <input required type="text-area" class="normaltext description-input" 
+            placeholder="TODO DESCRIPTION" id="newtodo-description"/>
       </div>
       <div class="icon-wrapper">
-        <button onclick="handleNewTodo()">
-          <i data-feather="save" class="todo-icon save" id="newtodo-save"></i>
+        <button id="newtodo-save-button" >
+          <!-- <i data-feather="save" class="todo-icon save" id="newtodo-save"></i> -->
+          <i data-feather="save" class="save" style="width: 31px; height: 30px;"></i>
         </button>
         <i></i>
         <i></i>
@@ -81,7 +130,22 @@
     </div>
   </div>
   <div class="todolist" id="todolist">
-
+    <!-- for reference
+    <div class="todo-model">
+      <div class="text-wrapper">
+        <div class="titledue-wrapper">
+          <input class="normaltext title-input" type="text" placeholder="TITLE" />
+          <input class="normaltext date-input" type="datetime-local" placeholder="DUE DATE" />
+        </div>
+        <input type="text-area" class="normaltext description-input" placeholder="TODO DESCRIPTION" />
+      </div>
+      <div class="icon-wrapper">
+        <i data-feather="trash-2" class="todo-icon delete"></i>
+        <i data-feather="save" class="todo-icon save"></i>
+        <i data-feather="edit-3" class="todo-icon edit"></i>
+        <i data-feather="plus" class="todo-icon add"></i>
+      </div>
+    </div> -->
   </div>
   </div>
 
@@ -109,6 +173,7 @@
   <script src="server.js" type="text/javascript"></script>
   <script src="runtime.js"></script>
   <script src="script.js" type="text/javascript"></script>
+  <script>window.addEventListener('load', () =>{ feather.replace()})</script>
 </body>
 
 </html>

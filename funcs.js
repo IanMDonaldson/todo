@@ -1,15 +1,12 @@
-/**
- * tagName is string tag, classes is a string array of classes
- *
- * Attributes requires pairs of attributes and their values
- *
- * for instance ["class", "myclassName", "aria-label", "This is an aria-label"]
- * @param {String} tagName
- * @param {Array} classes
- * @param {Array} attributes
- * @param {String} innerText
- * @returns {any}
- */
+
+const byId = (id) => document.getElementById(id);
+let errorToast = byId('toast-error')
+let errorClose = byId('toast-error-close')
+let errorMessage = byId('toast-error-message')
+let successToast = byId('toast-success')
+let successClose = byId('toast-success-close')
+let successMessage = byId('toast-success-message')
+
 function create(
   tagName = "DIV",
   classes = [],
@@ -25,27 +22,50 @@ function create(
   console.log(output);
   return output;
 }
+function addClickEventListener(element, myFunction) {
+  // for (let element in elems) {
+    if (element.getAttribute('clickListener') !== "true") {
+      element.addEventListener('click', () => {
+        myFunction();
+        console.log('element ' + element.toString() + ' event click event has been attached');
+      })
+      element.setAttribute('clickListener', 'true');
+    }
+  // }
+}
 
-// function create(tagName, classes, attributes, innerText) {
-//   let output = -1;
-//   if (tagName) output = document.createElement(tagName);
-//   if (classes) {
-//     classes.forEach((e) => {
-//       output.classList.add(e);
-//     });
-//   }
-//   if (attributes) {
-//     for (let i = 0; i < attributes.length; i += 2) {
-//       output.setAttribute(attributes[i], attributes[i + 1]);
-//     }
-//   }
-//   if (innerText) output.innerText = innerText;
-//   return output;
-// };
+function addChangeEventListener(element, myFunction) {
+  // for (let element of elems) {
+  if (element.getAttribute('changeListener') !== 'true') {
+    element.addEventListener('change', () => {
+      myFunction(element)
+    })
+    element.setAttribute('changeListener', 'true');
+  }
+// }
+}
+function addInputEventListener(element, myFunction) {
+  if (element.getAttribute('inputListener') !== 'true') {
+    element.addEventListener('input', () => {
+      myFunction(element)
+    })
+    element.setAttribute('inputListener', 'true');
+  }
+}
+function addKeyupEventListener(element, myFunction) {
+  // for (let element in elems) {
+    if (element.getAttribute('keyupListener') !== "true") {
+      element.addEventListener('keyup', () => {
+        myFunction(element);
+        console.log('element ' + element.toString() + ' event click event has been attached');
+      })
+      element.setAttribute('keyupListener', 'true');
+    }
+  // }
+}
 
 const append = (tag) => document.appendChild(tag);
 
-const byId = (id) => document.getElementById(id);
 function byIds(...ids) {
   let obj = {}
   for (let id of ids) {
@@ -87,211 +107,225 @@ HTMLElement.prototype.__defineGetter__("toggleDisplay", function () {
   return true;
 });
 
-function insertTodo(
-  todolist,
-  todoElement,
-  hiddenId,
-  textWrapper,
-  titleDueWrapper,
-  todoTitle,
-  todoTitleInput,
-  todoDueDate,
-  todoDueDateInput,
-  todoDescription,
-  todoDescriptionInput,
-  iconWrapper,
-  trashIcon,
-  saveIcon,
-  editIcon,
-  addIcon
-) {
-  console.log("insertTodo entered");
-  todoElement.insert(hiddenId);
-  todoElement.insert(textWrapper);
-  textWrapper.insert(titleDueWrapper);
-  titleDueWrapper.insert(todoTitle);
-  titleDueWrapper.insert(todoTitleInput);
-  titleDueWrapper.insert(todoDueDate);
-  titleDueWrapper.insert(todoDueDateInput);
-  textWrapper.insert(todoDescription);
-  textWrapper.insert(todoDescriptionInput);
-  todoElement.insert(iconWrapper);
-  iconWrapper.insert(trashIcon);
-  iconWrapper.insert(saveIcon);
-  iconWrapper.insert(editIcon);
-  iconWrapper.insert(addIcon);
-  //finally add it to the todolist
-  todolist.insert(todoElement);
+function todaysDate() {
+  let date = new Date();
+  return ((date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes());
+}
+
+function isDateValid(dateElem, timeElem) {
+  let date = new Date(dateElem.value + 'T' + timeElem.value);
+  if (Object.prototype.toString.call(date) === "[object Date]") {
+    // it is a date
+    if (isNaN(date)) { // d.getTime() or d.valueOf() will also work
+      // date object is not valid
+      return false;
+    } else {
+      // date object is valid
+      return true
+    }
+  }
+  // not a date object
+  return false;
+
+}
+
+function isDateBeforeCutoff(dateElem, timeElem) {
+
+  //cutoff is 5 mins past current time
+  try {
+    let now = new Date();
+    let dateInput = new Date(dateElem.value + 'T' + timeElem.value);
+    let cutoffDate = new Date(now.getTime() + 5*60*1000);
+    console.log(`
+      dateelem value = ${dateElem.value} and TimeElem.value = ${timeElem.value}
+      date Input: ${dateInput}
+      cutoffDate: ${cutoffDate}
+      date - cutoff = ${(dateInput.getTime() - cutoffDate.getTime())}`)
+    if ((dateInput.getTime() -cutoffDate.getTime()) <= 0) { 
+      console.log('date is before cutoff!')
+      return true
+    }
+    return false
+  } catch (error) {
+    handleError(error)
+    return true //therefore invalid date ;)
+  }
+}
+function addInvalidInput(...elems) {
+  try {
+    console.log('addInvalidInput activated')
+    for (let elem of elems) {
+    if (!elem.classList.contains('invalid-input')) {
+      elem.classList.add('invalid-input')
+    }
+    }
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+function removeInvalidInput(...elems) {
+  try {
+    console.log('removeInvalidInput activated')
+    for (let elem of elems) {
+    if (elem.classList.contains('invalid-input')) {
+      elem.classList.remove('invalid-input')
+    }
+    }
+  } catch (error) {
+    handleError(error) 
+  }
 }
 
 function toggleDisplay(elem) {
-  if (elem.classList.contains("display-none")) {
-    elem.classList.remove("display-none");
+  console.log('toggledisplay activated');
+  try {
+    if (elem.classList.contains("display-none")) {
+      elem.classList.remove("display-none");
+      return true;
+    }
+    elem.classList.add("display-none");
     return true;
+  } catch (err) {
+    handleError(err)
+    return false; 
   }
-  elem.classList.add("display-none");
-  return true;
 }
 
-//function swapWithInputs(...elems) {
-function toggleInputs(textwrapper) {
-  // elems.forEach((e) => toggleDisplay(e));
-  textwrapper.childNodes[0].childNodes.forEach((e) => toggleDisplay(e));
-  toggleDisplay(textwrapper.childNodes[1]);
-  toggleDisplay(textwrapper.childNodes[2]);
-}
 
 function toggleDisabled(elem) {
-  if (elem.classList.contains("disabled")) {
-    elem.classList.remove("disabled");
+  try {
+    if (elem.classList.contains("disabled")) {
+      elem.classList.remove("disabled");
+      return true;
+    }
+    elem.classList.add("disabled");
     return true;
-  }
-  elem.classList.add("disabled");
-  return true;
-}
-
-function handleDelete(hiddenId) {
-  let indexOfTodo = pageData.todos
-    .map(function (x) {
-      return x.id;
-    })
-    .indexOf(Number.parseInt(hiddenId.value));
-  if (indexOfTodo < 0) {
-    alert("Thanks for changing that");
-    return;
-  }
-  pageData.todos.splice(indexOfTodo, 1);
-  writeToLocalStorage(pageData.todos);
-}
-
-function handleTimSave(title, task) {
-  let todo = new TodoElement({
-    title: title,
-    task: task
-  })
-  pageData.todos.push(todo)
-  renderTodos()
-}
-
-const handleSave = function (
-  textWrapper,
-  iconWrapper,
-  todoTitleInput,
-  todoDateInput,
-  todoDescriptionInput,
-  hiddenId
-) {
-  let indexOfTodo = pageData.todos.map(function (x) {return x.id;})
-    .indexOf(Number.parseInt(hiddenId.value));
-  if (indexOfTodo < 0) {
-    alert("Thanks for changing that");
-    return;
-  }
-  pageData.todos[indexOfTodo].title = todoTitleInput.value;
-  pageData.todos[indexOfTodo].description = todoDescriptionInput.value;
-  pageData.todos[indexOfTodo].dueDate = Date.parse(todoDateInput.value);
-  writeToLocalStorage(pageData.todos); //sorts too!
-  toggleDisabled(iconWrapper.childNodes[1]);
-  toggleDisabled(iconWrapper.childNodes[2]);
-  toggleInputs(textWrapper);
-};
-
-const handleEdit = function (textwrapper, iconWrapper) {
-  toggleDisabled(iconWrapper.childNodes[1]);
-  toggleDisabled(iconWrapper.childNodes[2]);
-  toggleInputs(textwrapper);
-  return true;
-};
-
-function handleAddSubtask(iconWrapper, todoElement) {
-  console.log("handleAddSubtask clicked");
-}
-function handleNewTodo() {
-  let inputs = byIds('newtodo-title', 'newtodo-date', 'newtodo-description')
-  let newtodo = {
-    id: generateId(),
-    title: inputs["newtodo-title"].value,
-    description: inputs["newtodo-description"].value,
-    dueDate: inputs["newtodo-date"].value
-  }
-  console.log(newtodo)
-  pageData.todos.push(newtodo)
-  writeToLocalStorage(pageData.todos)
-  console.log(pageData.todos)
-}
-
-
-
-function addButtonEventListeners(textWrapper, iconWrapper, hiddenId) {
-  let todoTitleInput = textWrapper.childNodes[0].childNodes[1];
-  let todoDateInput = textWrapper.childNodes[0].childNodes[3];
-  let todoDescriptionInput = textWrapper.childNodes[2];
-  let deleteIcon = iconWrapper.childNodes[0];
-  let saveIcon = iconWrapper.childNodes[1];
-  let editIcon = iconWrapper.childNodes[2];
-  let addIcon = iconWrapper.childNodes[3];
-
-  //delete handler
-  deleteIcon.addEventListener("click", () => {
-    handleDelete(hiddenId);
-  });
-
-  saveIcon.addEventListener("click", () => {
-    handleSave(
-      textWrapper,
-      iconWrapper,
-      todoTitleInput,
-      todoDateInput,
-      todoDescriptionInput,
-      hiddenId
-    );
-  });
-
-  editIcon.addEventListener("click", () => {
-    handleEdit(textWrapper, iconWrapper);
-  });
-
-  //add subtask handler
-  addIcon.addEventListener("click", () => {
-    handleAddSubtask();
-  });
-}
-function timeTillDue(dueDate) {
-  let total = Date.parse(dueDate) - Date.parse(new Date());
-  let seconds = Math.floor((total / 1000) % 60);
-  let minutes = Math.floor((total / 1000 / 60) % 60);
-  let hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-  let days = Math.floor(total / (1000 * 60 * 60 * 24));
-
-  return {
-    total: [total],
-    days: [days],
-    hours: [hours],
-    minutes: [minutes],
-    seconds: [seconds],
-  };
-}
-function formatTodoDate(timetill) {
-  if (timetill.days < 1) {
-    return "Due in: " + timetill.hours + ":" + timetill.minutes;
-  }
-  return "Due in: " + timetill.days + " Days";
-}
-
-function colorcodeDueDate(todoDueDate, timetill) {
-  //default dueDate has the dueDate-good class on it
-  if (timetill.days < 2) {
-    todoDueDate.classList.remove("dueDate-good");
-    todoDueDate.classList.add("dueDate-alert");
-    return;
-  }
-  if (timetill.days < 5 && timetill.days >= 2) {
-    todoDueDate.classList.remove("dueDate-good");
-    todoDueDate.classList.add("dueDate-warning");
-    return;
+  } catch (err) {
+    handleError(err)
+    return false 
   }
 }
 
-function handleError() {}
-function handleSuccess() {}
+function areAllInputsValid(descriptionInput, titleInput, dateInput, timeInput) {
+  let valid = true
+  try {
+    if (!areTextInputsValid(descriptionInput, titleInput)) {
+      console.log('nonvalid inputs!')
+      addInputEventListener(descriptionInput, handleInvalidInput);
+      addInputEventListener(titleInput, handleInvalidInput)
+      valid = false 
+    }
+    if (!areDateInputsValid(dateInput, timeInput)) {
+      addChangeEventListener(dateInput, function() {areDateInputsValid(dateInput, timeInput)})
+      addChangeEventListener(timeInput, function() {areDateInputsValid(dateInput, timeInput)})
+      valid = false
+    }
+    return valid
+  } catch (err) {
+    handleError(err)
+    return false 
+  }
+}
+function handleNewTodo(descriptionInput, titleInput, dateInput, timeInput) {
+  if (!areAllInputsValid(descriptionInput, titleInput, dateInput, timeInput)) {
+    return
+  }
+  try {
+    let newtodo = {
+      id: generateId(),
+      title: newtodoTitle.value,
+      description: newtodoDescription.value,
+      dueDate: new Date(newtodoDate.value + "," + newtodoTime.value)
+    }
+    console.log(newtodo)
+    pageData.todos.push(newtodo)
+    writeToLocalStorage(pageData.todos)
+    console.log(pageData.todos)
+    handleSuccess('Todo Successfully Saved!')
+  } catch (err) {
+    handleError(err)
+  }
+}
+
+function areDateInputsValid(dateInput, timeInput) {
+  let valid = true
+  let errormessage;
+  try {
+    if (!dateInput.value) {
+      console.log("dateinput no value")
+      errormessage += '-- date has no value --\n'
+      valid = false
+    }
+    if (!timeInput.value) {
+      console.log("timeinput no value")
+      errormessage += '-- time has no value --\n'
+      valid = false
+    }
+    if (valid && !isDateValid(dateInput, timeInput)) {
+      console.log('Is date, but invalid date')
+      errormessage += '-- Date time is invalid format --'
+      valid = false
+      
+    } else if (isDateBeforeCutoff(dateInput, timeInput)) {
+      console.log('input date is BEFORE cutoff and Invalid')
+      errormessage += '-- Datetime is too early, due date can be at minimum 5 minutes past the current time.\n'
+      valid = false
+    }
+    if (!valid) {
+      console.log('INVALID DATE INPUTS')
+      handleError(errormessage)
+      addInvalidInput(dateInput)
+      addInvalidInput(timeInput)
+      return valid
+    }
+    removeInvalidInput(dateInput)
+    removeInvalidInput(timeInput)
+    return valid;
+  } catch (err) {
+    handleError(err)  
+    return false
+  }
+}
+function areTextInputsValid(descriptionInput, titleInput) {
+  let valid = true
+  try {
+    if (descriptionInput.value == false) {
+      valid = false;
+      addInvalidInput(descriptionInput)
+    }
+    if (titleInput.value == false) {
+      valid = false
+      addInvalidInput(titleInput)
+    }
+    if (valid === true) {
+      removeInvalidInput(descriptionInput, titleInput)
+    }
+    return valid
+  } catch (err) {
+    handleError(err)  
+  }
+}
+function handleInvalidInput(elem) {
+  console.log("handleInValidInput")
+  if (elem.value == false) {
+    addInvalidInput(elem)
+    return false;
+  }
+  removeInvalidInput(elem)
+}
+
+
+function handleError(message) {
+  errorMessage.innerText = message;
+  if (!successToast.classList.contains('display-none')) toggleDisplay(successToast)
+  if (errorToast.classList.contains('display-none')) toggleDisplay(errorToast)
+
+}
+
+function handleSuccess(message) {
+  successMessage.innerText = message 
+  if (!errorToast.classList.contains('display-none')) toggleDisplay(errorToast)
+  if (successToast.classList.contains('display-none')) toggleDisplay(successToast)
+}
 function handleToast() {}
