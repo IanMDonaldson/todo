@@ -147,7 +147,8 @@ function isDateBeforeCutoff(dateElem, timeElem) {
     }
     return false
   } catch (error) {
-    handleError(error)
+    console.log(e)
+handleError(error)
     return true //therefore invalid date ;)
   }
 }
@@ -160,7 +161,8 @@ function addInvalidInput(...elems) {
     }
     }
   } catch (error) {
-    handleError(error)
+    console.log(e)
+handleError(error)
   }
 }
 
@@ -173,46 +175,51 @@ function removeInvalidInput(...elems) {
     }
     }
   } catch (error) {
-    handleError(error) 
+    console.log(e)
+handleError(error) 
   }
 }
 
-function toggleDisplay(elem) {
-  console.log('toggledisplay activated');
+function toggleDisplay(...elems) {
   try {
-    if (elem.classList.contains("display-none")) {
-      elem.classList.remove("display-none");
-      return true;
+    for (elem of elems) {
+      console.log("toggle display activated")
+      if (elem.classList.contains("display-none")) {
+        elem.classList.remove("display-none");
+      } else {
+        elem.classList.add("display-none");
+      }
     }
-    elem.classList.add("display-none");
-    return true;
   } catch (err) {
-    handleError(err)
+    console.log(e)
+handleError(err)
     return false; 
   }
 }
 
 
-function toggleDisabled(elem) {
-  try {
-    if (elem.classList.contains("disabled")) {
-      elem.classList.remove("disabled");
-      return true;
+function toggleDisabled(...elems) {
+  for (elem of elems) {
+    try {
+      console.log("disabled toggled")
+      if (elem.classList.contains("disabled")) {
+        elem.classList.remove("disabled");
+      } else {
+        elem.classList.add("disabled");
+      }
+    } catch (err) {
+      console.log(e)
+handleError(err)
+      return false 
     }
-    elem.classList.add("disabled");
-    return true;
-  } catch (err) {
-    handleError(err)
-    return false 
   }
 }
 
-function areAllInputsValid(descriptionInput, titleInput, dateInput, timeInput) {
+function areAllInputsValid(titleInput, dateInput, timeInput) {
   let valid = true
   try {
-    if (!areTextInputsValid(descriptionInput, titleInput)) {
+    if (!areTextInputsValid(titleInput)) {
       console.log('nonvalid inputs!')
-      addInputEventListener(descriptionInput, handleInvalidInput);
       addInputEventListener(titleInput, handleInvalidInput)
       valid = false 
     }
@@ -227,16 +234,19 @@ function areAllInputsValid(descriptionInput, titleInput, dateInput, timeInput) {
     return false 
   }
 }
-function handleNewTodo(descriptionInput, titleInput, dateInput, timeInput) {
-  if (!areAllInputsValid(descriptionInput, titleInput, dateInput, timeInput)) {
+function handleNewTodo(titleInput, dateInput, timeInput) {
+  if (!areAllInputsValid(titleInput, dateInput, timeInput)) {
     return
   }
   try {
     let newtodo = {
       id: generateId(),
       title: newtodoTitle.value,
-      description: newtodoDescription.value,
-      dueDate: new Date(newtodoDate.value + "," + newtodoTime.value)
+      dueDate: new Date(newtodoDate.value + "," + newtodoTime.value),
+      subtasks: [],
+      isSubtask: false,
+      parentId: null,
+      isComplete: false
     }
     console.log(newtodo)
     pageData.todos.push(newtodo)
@@ -287,23 +297,19 @@ function areDateInputsValid(dateInput, timeInput) {
     return false
   }
 }
-function areTextInputsValid(descriptionInput, titleInput) {
+function areTextInputsValid(titleInput) {
   let valid = true
   try {
-    if (descriptionInput.value == false) {
-      valid = false;
-      addInvalidInput(descriptionInput)
-    }
     if (titleInput.value == false) {
       valid = false
       addInvalidInput(titleInput)
     }
     if (valid === true) {
-      removeInvalidInput(descriptionInput, titleInput)
+      removeInvalidInput(titleInput)
     }
     return valid
   } catch (err) {
-    handleError(err)  
+    handleError(`areTextInputsValid error: ${err}`)  
   }
 }
 function handleInvalidInput(elem) {
@@ -317,6 +323,7 @@ function handleInvalidInput(elem) {
 
 
 function handleError(message) {
+  console.log(message)
   errorMessage.innerText = message;
   if (!successToast.classList.contains('display-none')) toggleDisplay(successToast)
   if (errorToast.classList.contains('display-none')) toggleDisplay(errorToast)
@@ -329,3 +336,16 @@ function handleSuccess(message) {
   if (successToast.classList.contains('display-none')) toggleDisplay(successToast)
 }
 function handleToast() {}
+
+function setStandardizedDate(dateObject, dateElem, timeElem) {
+  try {
+    let offset = dateObject.getTimezoneOffset();
+    date = new Date(dateObject.getTime() - (offset*60*1000)).toISOString().split('T')
+  
+    let time = date[1].split(':');
+    dateElem.value = date[0];
+    timeElem.value = time[0]+":"+time[1];
+  } catch (err) {
+    handleError(err); 
+  }
+}

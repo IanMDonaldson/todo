@@ -1,7 +1,7 @@
 function readFromLocalStorage() { return JSON.parse(localStorage.getItem("todos"))}
 const writeToLocalStorage = (todos) => {
   localStorage.setItem('todos', JSON.stringify(sortTodos(todos)));
-  
+  location.reload()
 }
 const generateId = () => {
   return Math.floor(Math.random() * 999_999_999).toString(16);
@@ -26,7 +26,7 @@ const generateRandomTodos = () => {
 }
 const sortTodos = (todos) => {
   return todos.sort((a, b) => {
-    if (new Date(a.dueDate) < new Date(b.dueDate) ) return 1
+    if (new Date(a.dueDate) > new Date(b.dueDate) ) return 1
     return -1
   })
 }

@@ -90,7 +90,7 @@
   </div>
 
   <div id="todolist-wrapper" class="mylightbrown">
-    <div class="newtodo-model" id="new-todo">
+    <div class="newtodo-model todo-model" id="new-todo">
       <div class="text-wrapper">
         <div class="titledue-wrapper">
           <input class="normaltext title-input" type="text" placeholder="TITLE" id="newtodo-title" required />
@@ -105,43 +105,35 @@
         <button class="todo-button" id="newtodo-save-button">
           <i data-feather="save" class="save" style="width: 31px; height: 30px;"></i>
         </button>
+        <i></i>
+        <i></i>
+      </div>
     </div>
   </div>
   <div class="todolist" id="todolist">
-    <!-- <div class="todo-wrapper">
-      <todo class="todo-model">
+    <div class="todo-wrapper">
+      <todo class="todo-model" style="height: 65px;">
         <div class="title-wrapper">
-          <p class="todo-title">asdfasdf</p>
+          <p class="todo-title"></p>
           <input class="midtext title-input display-none" type="text" value="asdfasdf">
         </div>
-        <div class="duedate-wrapper">          
-          <p class="todo-duedate duedate-good">Due in: 22 hours</p>
+        <div class="duedate-wrapper">
           <input class="todo-date-input display-none" type="date">
           <input class="todo-date-input display-none" type="time">
+          <p class="todo-duedate duedate-alert"></p>
         </div>
+        <!-- <div class="date-icon-wrapper"> -->
         <div class="icon-wrapper">
-          <button class="todo-button delete-icon-button">
-            <i class="todo-icon delete" data-feather="trash-2"></i>
-          </button>
-          <button class="todo-button save-icon-button">
-            <i class="todo-icon save" data-feather="save"></i>
-          </button>
-          <button class="todo-button edit-icon-button disabled">
-            <i class="todo-icon edit" data-feather="edit-3"></i>
-          </button>
-          <button class="todo-button add-icon-button">
-            <i class="todo-icon add" data-feather="plus"></i>
-          </button>
-          <button class="todo-button complete-icon-button">
-            <i class="todo-icon complete" data-feather="check-circle"></i>
-          </button>
+          
         </div>
+        <!-- </div> -->
       </todo>
     </div>
-    <div class="todo-wrapper subtask">
+    <!-- <div class="todo-wrapper subtask-level-1">
       <div></div>
       <div class="subtask-connector"></div>
       <todo class="todo-model zero-left-margin">
+         <todo class="todo-model subtask-level-1"> 
         <div class="title-wrapper">
           <p class="todo-title">asdfasdf and then this!</p>
           <input class="midtext title-input display-none" type="text" value="asdfasdf">
@@ -149,8 +141,9 @@
         <div class="duedate-wrapper">
           <input class="todo-date-input display-none" type="date">
           <input class="todo-date-input display-none" type="time">
-          <p class="todo-duedate duedate-warning">Due in: 22 hours and some minutes</p>
+          <p class="todo-duedate duedate-alert">Due in: 22 hours and some minutes</p>
         </div>
+        <div class="date-icon-wrapper"> 
         <div class="icon-wrapper">
           <button class="todo-button delete-icon-button">
             <i class="todo-icon delete" data-feather="trash-2"></i>
@@ -168,41 +161,12 @@
             <i class="todo-icon complete" data-feather="check-circle"></i>
           </button>
         </div>
+
+      
       </todo>
     </div>
-    <div class="todo-wrapper subtask">
-      <div></div>
-      <div class="subtask-connector"></div>
-      <todo class="todo-model zero-left-margin">
-        <div class="title-wrapper">
-          <p class="todo-title">asdfasdf and then this!</p>
-          <input class="midtext title-input display-none" type="text" value="asdfasdf">
-        </div>
-        <div class="duedate-wrapper">
-          <input class="todo-date-input display-none" type="date">
-          <input class="todo-date-input display-none" type="time">
-          <p class="todo-duedate duedate-warning">Due in: 22 hours and some minutes</p>
-        </div>
-        <div class="icon-wrapper">
-          <button class="todo-button delete-icon-button">
-            <i class="todo-icon delete" data-feather="trash-2"></i>
-          </button>
-          <button class="todo-button save-icon-button">
-            <i class="todo-icon save" data-feather="save"></i>
-          </button>
-          <button class="todo-button edit-icon-button disabled">
-            <i class="todo-icon edit" data-feather="edit-3"></i>
-          </button>
-          <button class="todo-button add-icon-button">
-            <i class="todo-icon add" data-feather="plus"></i>
-          </button>
-          <button class="todo-button complete-icon-button">
-            <i class="todo-icon complete" data-feather="check-circle"></i>
-          </button>
-        </div>
-      </todo> -->
-    </div>
-  </div>
+  --> 
+
   <div class="footer" id="footer">
 
 

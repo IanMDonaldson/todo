@@ -2,7 +2,6 @@ let submit = byId("newtodo-submit");
 
 let todolist = byId("todolist");
 
-let newtodoDescription = byId('newtodo-description')
 let newtodoTitle = byId('newtodo-title')
 let newtodoDate =  byId('newtodo-date')
 let newtodoTime = byId('newtodo-time')
@@ -24,22 +23,14 @@ for (let x of toastExits) {
         toggleDisplay(e.target.parentElement);
     });
 }
-function setNewTodoDate() {
-  //sets to 15 minutes past the current time
-  try {
-    let date = new Date();
-    let offset = date.getTimezoneOffset();
-    date = new Date((date.getTime()+(15*60*1000)) - (offset*60*1000)).toISOString().split('T')
-  
-    let time = date[1].split(':');
-    newtodoDate.value = date[0];
-    newtodoTime.value = time[0]+":"+time[1];
-  } catch (err) {
-    handleError(err); 
-  }
+function setNewTodoTime() {
+  let todaysDate = new Date()
+  let dateIn15mins = new Date(todaysDate.getTime()+(15*60*1000))
+  setStandardizedDate(dateIn15mins, newtodoDate, newtodoTime)
 }
+
 function Init() {
-    console.log('init ran', performance.now())
-    setNewTodoDate();
+  console.log('init ran', performance.now())
+  setNewTodoTime()
 };
 Init();
