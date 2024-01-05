@@ -1,11 +1,14 @@
-
 const byId = (id) => document.getElementById(id);
-let errorToast = byId('toast-error')
-let errorClose = byId('toast-error-close')
-let errorMessage = byId('toast-error-message')
-let successToast = byId('toast-success')
-let successClose = byId('toast-success-close')
-let successMessage = byId('toast-success-message')
+const append = (tag) => document.appendChild(tag);
+const byTag = (tag) => document.getElementsByTagName(tag);
+const byClass = (className) => document.getElementsByClassName(className);
+
+let errorToast = byId("toast-error");
+let errorClose = byId("toast-error-close");
+let errorMessage = byId("toast-error-message");
+let successToast = byId("toast-success");
+let successClose = byId("toast-success-close");
+let successMessage = byId("toast-success-message");
 
 function create(
   tagName = "DIV",
@@ -22,59 +25,56 @@ function create(
   console.log(output);
   return output;
 }
+
 function addClickEventListener(element, myFunction) {
-  // for (let element in elems) {
-    if (element.getAttribute('clickListener') !== "true") {
-      element.addEventListener('click', () => {
-        myFunction();
-        console.log('element ' + element.toString() + ' event click event has been attached');
-      })
-      element.setAttribute('clickListener', 'true');
-    }
-  // }
+  if (element.getAttribute("clickListener") !== "true") {
+    element.addEventListener("click", () => {
+      myFunction();
+      console.log(
+        "element " + element.toString() + " event click event has been attached"
+      );
+    });
+    element.setAttribute("clickListener", "true");
+  }
 }
 
 function addChangeEventListener(element, myFunction) {
-  // for (let element of elems) {
-  if (element.getAttribute('changeListener') !== 'true') {
-    element.addEventListener('change', () => {
-      myFunction(element)
-    })
-    element.setAttribute('changeListener', 'true');
+  if (element.getAttribute("changeListener") !== "true") {
+    element.addEventListener("change", () => {
+      myFunction(element);
+    });
+    element.setAttribute("changeListener", "true");
   }
-// }
-}
-function addInputEventListener(element, myFunction) {
-  if (element.getAttribute('inputListener') !== 'true') {
-    element.addEventListener('input', () => {
-      myFunction(element)
-    })
-    element.setAttribute('inputListener', 'true');
-  }
-}
-function addKeyupEventListener(element, myFunction) {
-  // for (let element in elems) {
-    if (element.getAttribute('keyupListener') !== "true") {
-      element.addEventListener('keyup', () => {
-        myFunction(element);
-        console.log('element ' + element.toString() + ' event click event has been attached');
-      })
-      element.setAttribute('keyupListener', 'true');
-    }
-  // }
 }
 
-const append = (tag) => document.appendChild(tag);
+function addInputEventListener(element, myFunction) {
+  if (element.getAttribute("inputListener") !== "true") {
+    element.addEventListener("input", () => {
+      myFunction(element);
+    });
+    element.setAttribute("inputListener", "true");
+  }
+}
+
+function addKeyupEventListener(element, myFunction) {
+  if (element.getAttribute("keyupListener") !== "true") {
+    element.addEventListener("keyup", () => {
+      myFunction(element);
+      console.log(
+        "element " + element.toString() + " event click event has been attached"
+      );
+    });
+    element.setAttribute("keyupListener", "true");
+  }
+}
 
 function byIds(...ids) {
-  let obj = {}
+  let obj = {};
   for (let id of ids) {
     obj[id] = document.getElementById(id);
   }
-  return obj
+  return obj;
 }
-const byTag = (tag) => document.getElementsByTagName(tag);
-const byClass = (className) => document.getElementsByClassName(className);
 
 const P = (text, ...classes) => {
   let output = create("p");
@@ -98,92 +98,75 @@ HTMLElement.prototype.insertAfter = function (...elems) {
   }
 };
 
-HTMLElement.prototype.__defineGetter__("toggleDisplay", function () {
-  if (this.classList.contains("display-none")) {
-    this.classList.remove("display-none");
-    return true;
-  }
-  this.classList.add("display-none");
-  return true;
-});
-
-function todaysDate() {
-  let date = new Date();
-  return ((date.getMonth()+1)+'/'+date.getDate()+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes());
-}
-
 function isDateValid(dateElem, timeElem) {
-  let date = new Date(dateElem.value + 'T' + timeElem.value);
+  let date = new Date(dateElem.value + "T" + timeElem.value);
   if (Object.prototype.toString.call(date) === "[object Date]") {
     // it is a date
-    if (isNaN(date)) { // d.getTime() or d.valueOf() will also work
+    if (isNaN(date)) {
+      // d.getTime() or d.valueOf() will also work
       // date object is not valid
       return false;
     } else {
       // date object is valid
-      return true
+      return true;
     }
   }
   // not a date object
   return false;
-
 }
 
 function isDateBeforeCutoff(dateElem, timeElem) {
-
-  //cutoff is 5 mins past current time
   try {
     let now = new Date();
-    let dateInput = new Date(dateElem.value + 'T' + timeElem.value);
-    let cutoffDate = new Date(now.getTime() + 5*60*1000);
+    let dateInput = new Date(dateElem.value + "T" + timeElem.value);
+    let cutoffDate = new Date(now.getTime() + 5 * 60 * 1000);
     console.log(`
       dateelem value = ${dateElem.value} and TimeElem.value = ${timeElem.value}
       date Input: ${dateInput}
       cutoffDate: ${cutoffDate}
-      date - cutoff = ${(dateInput.getTime() - cutoffDate.getTime())}`)
-    if ((dateInput.getTime() -cutoffDate.getTime()) <= 0) { 
-      console.log('date is before cutoff!')
-      return true
+      date - cutoff = ${dateInput.getTime() - cutoffDate.getTime()}`);
+    if (dateInput.getTime() - cutoffDate.getTime() <= 0) {
+      console.log("date is before cutoff!");
+      return true;
     }
-    return false
+    return false;
   } catch (error) {
-    console.log(e)
-handleError(error)
-    return true //therefore invalid date ;)
+    handleError(error);
+    return true; //therefore invalid date
   }
 }
 function addInvalidInput(...elems) {
   try {
-    console.log('addInvalidInput activated')
+    console.log("addInvalidInput activated");
     for (let elem of elems) {
-    if (!elem.classList.contains('invalid-input')) {
-      elem.classList.add('invalid-input')
-    }
+      if (!elem.classList.contains("invalid-input")) {
+        elem.classList.add("invalid-input");
+      }
     }
   } catch (error) {
-    console.log(e)
-handleError(error)
+    console.log(e);
+    handleError(error);
   }
 }
 
 function removeInvalidInput(...elems) {
   try {
-    console.log('removeInvalidInput activated')
+    console.log("removeInvalidInput activated");
     for (let elem of elems) {
-    if (elem.classList.contains('invalid-input')) {
-      elem.classList.remove('invalid-input')
-    }
+      if (elem.classList.contains("invalid-input")) {
+        elem.classList.remove("invalid-input");
+      }
     }
   } catch (error) {
-    console.log(e)
-handleError(error) 
+    console.log(e);
+    handleError(error);
   }
 }
 
 function toggleDisplay(...elems) {
   try {
     for (elem of elems) {
-      console.log("toggle display activated")
+      console.log("toggle display activated");
       if (elem.classList.contains("display-none")) {
         elem.classList.remove("display-none");
       } else {
@@ -191,49 +174,53 @@ function toggleDisplay(...elems) {
       }
     }
   } catch (err) {
-    console.log(e)
-handleError(err)
-    return false; 
+    console.log(e);
+    handleError(err);
+    return false;
   }
 }
-
 
 function toggleDisabled(...elems) {
   for (elem of elems) {
     try {
-      console.log("disabled toggled")
+      console.log("disabled toggled");
       if (elem.classList.contains("disabled")) {
         elem.classList.remove("disabled");
       } else {
         elem.classList.add("disabled");
       }
     } catch (err) {
-      console.log(e)
-handleError(err)
-      return false 
+      console.log(e);
+      handleError(err);
+      return false;
     }
   }
 }
 
 function areAllInputsValid(titleInput, dateInput, timeInput) {
-  let valid = true
+  let valid = true;
   try {
     if (!areTextInputsValid(titleInput)) {
-      console.log('nonvalid inputs!')
-      addInputEventListener(titleInput, handleInvalidInput)
-      valid = false 
+      console.log("nonvalid inputs!");
+      addInputEventListener(titleInput, handleInvalidInput);
+      valid = false;
     }
     if (!areDateInputsValid(dateInput, timeInput)) {
-      addChangeEventListener(dateInput, function() {areDateInputsValid(dateInput, timeInput)})
-      addChangeEventListener(timeInput, function() {areDateInputsValid(dateInput, timeInput)})
-      valid = false
+      addChangeEventListener(dateInput, function () {
+        areDateInputsValid(dateInput, timeInput);
+      });
+      addChangeEventListener(timeInput, function () {
+        areDateInputsValid(dateInput, timeInput);
+      });
+      valid = false;
     }
-    return valid
+    return valid;
   } catch (err) {
-    handleError(err)
-    return false 
+    handleError(err);
+    return false;
   }
 }
+
 function handleNewTodo(titleInput, dateInput, timeInput) {
   if (!areAllInputsValid(titleInput, dateInput, timeInput)) {
     return
@@ -246,106 +233,108 @@ function handleNewTodo(titleInput, dateInput, timeInput) {
       subtasks: [],
       isSubtask: false,
       parentId: null,
-      isComplete: false
+      isComplete: false,
     }
-    console.log(newtodo)
-    pageData.todos.push(newtodo)
-    writeToLocalStorage(pageData.todos)
-    console.log(pageData.todos)
-    handleSuccess('Todo Successfully Saved!')
+    console.log(newtodo);
+    pageData.todos.push(newtodo);
+    writeToLocalStorage(pageData.todos);
+    console.log(pageData.todos);
+    handleSuccess("Todo Successfully Saved!")
   } catch (err) {
-    handleError(err)
+    handleError(err);
   }
 }
 
 function areDateInputsValid(dateInput, timeInput) {
-  let valid = true
+  let valid = true;
   let errormessage;
   try {
     if (!dateInput.value) {
-      console.log("dateinput no value")
-      errormessage += '-- date has no value --\n'
-      valid = false
+      console.log("dateinput no value");
+      errormessage += "-- date has no value --\n";
+      valid = false;
     }
     if (!timeInput.value) {
-      console.log("timeinput no value")
-      errormessage += '-- time has no value --\n'
-      valid = false
+      console.log("timeinput no value");
+      errormessage += "-- time has no value --\n";
+      valid = false;
     }
     if (valid && !isDateValid(dateInput, timeInput)) {
-      console.log('Is date, but invalid date')
-      errormessage += '-- Date time is invalid format --'
-      valid = false
-      
+      console.log("Is date, but invalid date");
+      errormessage += "-- Date time is invalid format --";
+      valid = false;
     } else if (isDateBeforeCutoff(dateInput, timeInput)) {
-      console.log('input date is BEFORE cutoff and Invalid')
-      errormessage += '-- Datetime is too early, due date can be at minimum 5 minutes past the current time.\n'
-      valid = false
+      console.log("input date is BEFORE cutoff and Invalid");
+      errormessage +=
+        "-- Datetime is too early, due date can be at minimum 5 minutes past the current time.\n";
+      valid = false;
     }
     if (!valid) {
-      console.log('INVALID DATE INPUTS')
-      handleError(errormessage)
-      addInvalidInput(dateInput)
-      addInvalidInput(timeInput)
-      return valid
+      console.log("INVALID DATE INPUTS");
+      handleError(errormessage);
+      addInvalidInput(dateInput);
+      addInvalidInput(timeInput);
+      return valid;
     }
-    removeInvalidInput(dateInput)
-    removeInvalidInput(timeInput)
+    removeInvalidInput(dateInput);
+    removeInvalidInput(timeInput);
     return valid;
   } catch (err) {
-    handleError(err)  
-    return false
-  }
-}
-function areTextInputsValid(titleInput) {
-  let valid = true
-  try {
-    if (titleInput.value == false) {
-      valid = false
-      addInvalidInput(titleInput)
-    }
-    if (valid === true) {
-      removeInvalidInput(titleInput)
-    }
-    return valid
-  } catch (err) {
-    handleError(`areTextInputsValid error: ${err}`)  
-  }
-}
-function handleInvalidInput(elem) {
-  console.log("handleInValidInput")
-  if (elem.value == false) {
-    addInvalidInput(elem)
+    handleError(err);
     return false;
   }
-  removeInvalidInput(elem)
 }
 
+function areTextInputsValid(titleInput) {
+  let valid = true;
+  try {
+    if (titleInput.value == false) {
+      valid = false;
+      addInvalidInput(titleInput);
+    }
+    if (valid === true) {
+      removeInvalidInput(titleInput);
+    }
+    return valid;
+  } catch (err) {
+    handleError(`areTextInputsValid error: ${err}`);
+  }
+}
+
+function handleInvalidInput(elem) {
+  console.log("handleInValidInput");
+  if (elem.value == false) {
+    addInvalidInput(elem);
+    return false;
+  }
+  removeInvalidInput(elem);
+}
 
 function handleError(message) {
-  console.log(message)
+  console.log(message);
   errorMessage.innerText = message;
-  if (!successToast.classList.contains('display-none')) toggleDisplay(successToast)
-  if (errorToast.classList.contains('display-none')) toggleDisplay(errorToast)
-
+  if (!successToast.classList.contains("display-none"))
+    toggleDisplay(successToast);
+  if (errorToast.classList.contains("display-none")) toggleDisplay(errorToast);
 }
 
 function handleSuccess(message) {
-  successMessage.innerText = message 
-  if (!errorToast.classList.contains('display-none')) toggleDisplay(errorToast)
-  if (successToast.classList.contains('display-none')) toggleDisplay(successToast)
+  successMessage.innerText = message;
+  if (!errorToast.classList.contains("display-none")) toggleDisplay(errorToast);
+  if (successToast.classList.contains("display-none"))
+    toggleDisplay(successToast);
 }
-function handleToast() {}
 
 function setStandardizedDate(dateObject, dateElem, timeElem) {
   try {
     let offset = dateObject.getTimezoneOffset();
-    date = new Date(dateObject.getTime() - (offset*60*1000)).toISOString().split('T')
-  
-    let time = date[1].split(':');
+    date = new Date(dateObject.getTime() - offset * 60 * 1000)
+      .toISOString()
+      .split("T");
+    let time = date[1].split(":");
     dateElem.value = date[0];
-    timeElem.value = time[0]+":"+time[1];
+    timeElem.value = time[0] + ":" + time[1];
   } catch (err) {
-    handleError(err); 
+    handleError(err);
   }
 }
